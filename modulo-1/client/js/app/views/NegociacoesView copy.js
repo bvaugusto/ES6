@@ -1,0 +1,47 @@
+class NegociacoesView {
+
+    constructor(element) {
+        this._element = element
+    }
+
+    _template(model) {
+        return `<table class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>DATA</th>
+                            <th>QUANTIDADE</th>
+                            <th>VALOR</th>
+                            <th>VOLUME</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        ${model.negociacoes.map(index => `
+                            <tr>
+                                <td>${DateHelper.dateToText(index.data)}</td>
+                                <td>${index.quantidade}</td>
+                                <td>${index.valor}</td>
+                                <td>${index.obtemVolume}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                    
+                    <tfoot>
+                        <td colspan="3"></td>
+                        <td>
+                        ${
+                            (()=> {
+                                let total = 0
+                                model.negociacoes.forEach(element => total+= element.obtemVolume);
+                                return total
+                            })()
+                        }
+                        </td>
+                    </tfoot>
+                </table>`;
+    }
+
+    update(model) {
+        this._element.innerHTML = this._template(model)
+    }
+}
